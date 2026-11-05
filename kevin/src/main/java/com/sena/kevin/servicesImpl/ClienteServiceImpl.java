@@ -20,7 +20,7 @@ public class ClienteServiceImpl implements ClienteServices {
     private final ClienteRepository clienteRepository;
     private final ClienteMapper clienteMapper;
 
-    // Guardar cliente
+    // Guardar
     @Override
     public ClienteDto guardar(ClienteDto clienteDto) {
         Cliente cliente = clienteMapper.toCliente(clienteDto);
