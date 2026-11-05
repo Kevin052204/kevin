@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-KevinApplication<leidy>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.sena.kevin.KevinApplication",
+            "projectName": "leidy",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-KevinApplication<Kevin>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.sena.kevin.KevinApplication",
+            "projectName": "Kevin",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
