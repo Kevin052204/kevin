@@ -1,5 +1,7 @@
 package com.sena.kevin.dtos;
 
+
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +16,7 @@ import lombok.SuperBuilder;
 @SuperBuilder
 public class ClienteDto extends UsuarioDto {
 
-    private String tipcli;
+    private Byte tipcli;
     private Integer pts;
 
 

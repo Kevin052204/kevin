@@ -4,51 +4,57 @@ import org.springframework.stereotype.Component;
 
 import com.sena.kevin.dtos.ClienteDto;
 import com.sena.kevin.models.usuarios.Cliente;
+import com.sena.kevin.dtos.ClienteDtoResponse;
 
-@Component 
+@Component
 public class ClienteMapperImpl implements ClienteMapper {
 
     @Override
-    public ClienteDto tDto(Cliente cliente) {
+    public ClienteDtoResponse toDto(Cliente cliente){
+
+        //validad que tenga datos
         if (cliente == null) {
-            return null;
+            return  null;
+
         }
 
-        // Creamos el DTO usando el constructor por defecto o setters temporalmente 
-        // para aislar si el fallo viene estrictamente del Builder de Lombok:
-        ClienteDto dto = new ClienteDto();
-        dto.setId(cliente.getId());
-        dto.setNomb(cliente.getNom());
-        dto.setApell(cliente.getApe());
-        dto.setDirec(cliente.getDir());
-        dto.setTele(cliente.getTel());
-        dto.setTipcli(cliente.getTipoCliente());
-        dto.setPts(cliente.getPuntos());
+        //convertir de cliente a  clienteDto
+        return  ClienteDtoResponse.builder()
+        //atribitos de usuarioDto
+        .id(cliente.getId())
+        .nomb(cliente.getNom())
+        .apell(cliente.getApe())
+        .direc(cliente.getDir())
+        .tele(cliente.getTel())
 
-        return dto;
+         //atributos de clienteDto
+        .tipCli(cliente.getTipoCliente().getNom_TipoCli())
+        .pts(cliente.getPuntos())
+        .build();
     }
 
-    @Override 
-    public Cliente toCliente(ClienteDto clientedDto) {
-        if (clientedDto == null) {
+        @Override
+        public Cliente toCliente(ClienteDto clienteDto){
+
+        //validad que tenga datos
+        if (clienteDto == null) {
             return null;
+
         }
 
-        Cliente cliente = new Cliente();
-        cliente.setId(clientedDto.getId());
-        cliente.setNom(clientedDto.getNomb());
-        cliente.setApe(clientedDto.getApell());
-        cliente.setDir(clientedDto.getDirec());
-        cliente.setTel(clientedDto.getTele());
-        cliente.setTipoCliente(clientedDto.getTipcli());
-        cliente.setPuntos(clientedDto.getPts());
+        return  Cliente.builder()
+         //atributos de UsuarioDto
+        .id(clienteDto.getId())
+        .nom(clienteDto.getNomb())
+        .ape(clienteDto.getApell())
+        .dir(clienteDto.getDirec())
+        .tel(clienteDto.getTele())
 
-        return cliente;
-    }
 
-    @Override
-    public Cliente tCliente(ClienteDto clienteDto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'tCliente'");
+        //No es necesario mapear el tipo de cliente ya que tiene relacion con la entidad TiposCliente
+        .puntos(clienteDto.getPts())
+        .build();
+
     }
 }
+

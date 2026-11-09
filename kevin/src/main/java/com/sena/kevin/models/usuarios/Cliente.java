@@ -1,7 +1,14 @@
 package com.sena.kevin.models.usuarios;
 
+import com.sena.kevin.enums.TipoCliente;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -18,12 +25,15 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @SuperBuilder 
 public class Cliente extends Usuario {
+    
+    
+    //@Enumerated (EnumType.STRING)
 
-    @Column (name = "tipo_cliente")
-    private String tipoCliente;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn (name = "tipo_Cliente", nullable = false)
+    private TiposCliente tipoCliente;
+
 
     @Column (name = "puntos")
     private Integer puntos;
-
-    
 }

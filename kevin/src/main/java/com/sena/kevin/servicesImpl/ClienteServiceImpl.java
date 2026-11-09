@@ -5,9 +5,12 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.sena.kevin.dtos.ClienteDto;
+import com.sena.kevin.dtos.ClienteDtoResponse;
 import com.sena.kevin.mappers.ClienteMapper;
 import com.sena.kevin.models.usuarios.Cliente;
+import com.sena.kevin.models.usuarios.TiposCliente;
 import com.sena.kevin.repositoryes.ClienteRepository;
+import com.sena.kevin.repositoryes.TipoClienteRepository;
 import com.sena.kevin.services.ClienteServices;
 import lombok.RequiredArgsConstructor;
 
@@ -19,53 +22,52 @@ public class ClienteServiceImpl implements ClienteServices {
 
     private final ClienteRepository clienteRepository;
     private final ClienteMapper clienteMapper;
+    private final TipoClienteRepository ticlirepo;
 
-    // Guardar
-    @Override
-    public ClienteDto guardar(ClienteDto clienteDto) {
+    @Override 
+    public ClienteDtoResponse guardar (ClienteDto clienteDto) {
+
+        //buscar por id de tipocliente e base de datos
+        TiposCliente tipo = ticlirepo.findById(clienteDto.getTipcli())
+                .orElseThrow(() -> new EntityNotFoundException("Tipo cliente no encontrado"));
+
+        //2. Convierte Dto en Entidad
         Cliente cliente = clienteMapper.toCliente(clienteDto);
-        Cliente clienteguardado = clienteRepository.save(cliente);
 
-        return clienteMapper.tDto(clienteguardado);
-    }
+        //3. El Id del cliente deber ser nul porque es autoincremetal
+        cliente.setId(null);
 
-    // Guardar varios clientes (Lote)
-    @Override
-    public List<ClienteDto> guardarTodos(List<ClienteDto> clienteDtos) {
-        List<Cliente> clientes = clienteDtos.stream()
-                .map(clienteMapper::toCliente)
-                .toList();
+        //4. asigna tipocliente"id"
+        cliente.setTipoCliente(tipo);
+        //5. guarda cliente en base de datos
 
-        List<Cliente> clientesGuardados = clienteRepository.saveAll(clientes);
+        Cliente clienteGuardado = clienteRepository.save(cliente);
 
-        return clientesGuardados.stream()
-                .map(clienteMapper::tDto)
-                .toList();
+        return clienteMapper.toDto(clienteGuardado);
     }
 
     // Listar todos los clientes
     @Override
-    public List<ClienteDto> listarTodos() {
+    public List<ClienteDtoResponse> listarTodos() {
         return clienteRepository.findAll()
                 .stream()
-                .map(clienteMapper::tDto)
+                .map(clienteMapper::toDto)
                 .toList();
     }
 
     // Consultar cliente por ID
     @Override
-    public ClienteDto buscarPorId(Long id) {
+    public ClienteDtoResponse buscarPorId(Long id) {
         Cliente cliente = clienteRepository.findById(id)
                 .orElseThrow(() ->
-                    new EntityNotFoundException(
-                        "Cliente no encontrado con ID: " + id));
+                    new EntityNotFoundException("Cliente no encontrado con ID: " + id));
 
-        return clienteMapper.tDto(cliente);
+        return clienteMapper.toDto(cliente);
     }
 
     // Actualizar cliente
     @Override
-    public ClienteDto actualizar(Long id, ClienteDto clienteDto) {
+    public ClienteDtoResponse actualizar(Long id, ClienteDto clienteDto) {
         Cliente clienteEncontrado = clienteRepository.findById(id)
                 .orElseThrow(() ->
                     new EntityNotFoundException(
@@ -77,12 +79,15 @@ public class ClienteServiceImpl implements ClienteServices {
         clienteEncontrado.setTel(clienteDto.getTele());
         
         // Atributos específicos del cliente
-        clienteEncontrado.setTipoCliente(clienteDto.getTipcli());
+        clienteEncontrado.setTipoCliente(ticlirepo.findById(clienteDto.getTipcli())
+                .orElseThrow(()->new EntityNotFoundException(
+                    "no se encuentra tipo de cliente" +clienteDto.getTipcli()
+                )));
         clienteEncontrado.setPuntos(clienteDto.getPts());
 
         Cliente clienteActualizado = clienteRepository.save(clienteEncontrado);
 
-        return clienteMapper.tDto(clienteActualizado);
+        return clienteMapper.toDto(clienteActualizado);
     }
 
     // Eliminar cliente
