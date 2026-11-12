@@ -12,7 +12,8 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @SuperBuilder 
 public class TrabajadorDto extends UsuarioDto {
-    private String cargo;
+   
+    private Byte cargo;
 
     private Double sueldo;
 

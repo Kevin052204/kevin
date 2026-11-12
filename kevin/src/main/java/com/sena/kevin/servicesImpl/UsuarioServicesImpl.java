@@ -47,8 +47,7 @@ public class UsuarioServicesImpl implements UsuarioServices {
 
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() ->
-                    new EntityNotFoundException(
-                        "Usuario no encontrado: " + id));
+                    new EntityNotFoundException("Usuario no encontrado: " + id));
 
         return usuarioMapper.ConvierteaDto(usuario);
     }
@@ -59,8 +58,7 @@ public class UsuarioServicesImpl implements UsuarioServices {
 
         Usuario usuarioEncontrado = usuarioRepository.findById(id)
                 .orElseThrow(() ->
-                    new EntityNotFoundException(
-                        "No se encuentra usuario con ID: " + id));
+                    new EntityNotFoundException("No se encuentra usuario con ID: " + id));
 
         usuarioEncontrado.setNom(usuarioDto.getNomb());
         usuarioEncontrado.setApe(usuarioDto.getApell());

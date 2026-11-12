@@ -3,24 +3,22 @@ package com.sena.kevin.services;
 import java.util.List;
 
 import com.sena.kevin.dtos.TrabajadorDto;
+import com.sena.kevin.dtos.TrabajadorDtoResponse;
 
 public interface TrabajadorServices {
 
     // Registrar un nuevo trabajador
-    TrabajadorDto guardar(TrabajadorDto trabajadorDto);
+    TrabajadorDtoResponse guardar(TrabajadorDto trabajadorDto);
 
-    // Registrar varios trabajadores a la vez (por lote)
-    List<TrabajadorDto> guardarTodos(List<TrabajadorDto> trabajadorDtos);
+    // Listar todos los cliente
+    List<TrabajadorDtoResponse> listarTodos();
 
-    // Listar todos los trabajadores
-    List<TrabajadorDto> listarTodos();
+    // Consultar usuario por ID
+    TrabajadorDtoResponse buscarPorId(Long id);
 
-    // Consultar trabajador por ID
-    TrabajadorDto buscarPorId(Long id);
+    // Actualizar usuario
+    TrabajadorDtoResponse actualizar(Long id, TrabajadorDto trabajadorDto);
 
-    // Actualizar trabajador
-    TrabajadorDto actualizar(Long id, TrabajadorDto trabajadorDto);
-
-    // Eliminar Trabajador
+    // Eliminar usuario
     void eliminar(Long id);
 }
