@@ -27,6 +27,7 @@ public class Trabajador extends Usuario {
     @Enumerated (EnumType.STRING)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn (name = "tipo_Trabajador", nullable = false)
+    
     private TiposTrabajador cargo;
     private Double sueldo;
 
